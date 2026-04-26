@@ -6267,9 +6267,10 @@ function drawToast() {
   }
 
   const compact = isCompactViewport();
+  const touchLayout = supportsTouchInput() && compact;
   const width = Math.min(compact ? state.width - 24 : 580, state.width - 24);
   const x = (state.width - width) / 2;
-  const y = compact ? 12 : 18;
+  const y = touchLayout ? 178 : compact ? 12 : 18;
   const height = compact ? 42 : 46;
 
   ctx.fillStyle = "rgba(5, 10, 18, 0.72)";
@@ -6315,9 +6316,11 @@ function drawDialog() {
 
 function drawCompactHud(skillLabel, martialLabel, routeTarget, checkpoint) {
   const currentRegion = regionDefinitions[state.quest.currentRegion] || regionDefinitions.village;
-  const panelWidth = Math.min(state.width - 26, Math.max(210, state.width - (getMiniMapLayout().radius * 2 + 52)));
+  const miniMapLayout = getMiniMapLayout();
+  const touchMenuClearance = supportsTouchInput() ? 54 : 0;
+  const panelWidth = Math.min(state.width - 26, Math.max(210, state.width - (miniMapLayout.radius * 2 + 52)));
   const panelX = 12;
-  const panelY = 12;
+  const panelY = 12 + touchMenuClearance;
   const panelHeight = isEvolutionMode() ? 134 : 122;
 
   ctx.fillStyle = "rgba(4, 11, 17, 0.68)";
