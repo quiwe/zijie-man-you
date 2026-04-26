@@ -7212,7 +7212,8 @@ function bindMenuButton(button, handler) {
       handler();
     } catch (error) {
       console.error("Menu action failed:", error);
-      setMenuStatus("启动失败，请重试。", "error");
+      const message = error?.message ? `启动失败：${error.message}` : "启动失败，请重试。";
+      setMenuStatus(message, "error");
     }
   };
 
