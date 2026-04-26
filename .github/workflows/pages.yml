@@ -27,9 +27,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
       - name: Build web version
         run: npm run web:build
       - name: Configure Pages
