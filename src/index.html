@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>字界漫游</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="scene">
+      <canvas id="game" aria-label="字界漫游游戏画布"></canvas>
+
+      <section class="touch-controls hidden" id="touchControls" aria-hidden="true">
+        <button class="touch-chip touch-chip--menu" type="button" id="touchMenuButton">菜单</button>
+
+        <div class="touch-pad" id="touchMovementPad" aria-label="移动摇杆">
+          <div class="touch-pad__ring"></div>
+          <div class="touch-pad__knob" id="touchMovementKnob"></div>
+        </div>
+
+        <div class="touch-actions">
+          <div class="touch-actions__row">
+            <button class="touch-btn touch-btn--secondary" type="button" id="touchInteractButton">互动</button>
+            <button class="touch-btn touch-btn--secondary" type="button" id="touchSkillButton">职业</button>
+          </div>
+          <div class="touch-actions__row">
+            <button class="touch-btn touch-btn--secondary" type="button" id="touchArtButton">武功</button>
+            <button class="touch-btn touch-btn--primary" type="button" id="touchAttackButton">攻击</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="menu-overlay" id="menuOverlay" aria-label="开始界面">
+        <div class="menu-shell">
+          <div class="menu-card" id="titlePanel">
+            <p class="menu-card__eyebrow">汉字开放世界</p>
+            <h2 class="menu-card__title">字界漫游</h2>
+            <p class="menu-card__desc">世界由汉字铺成，你将从起笔村出发，点亮遗迹，净化灾字，搜集宝物与秘技碎片，并在通关新手村后选择自己的职业。</p>
+
+            <div class="menu-actions">
+              <button class="menu-btn menu-btn--primary" type="button" id="startGameButton">进入游戏</button>
+              <button class="menu-btn menu-btn--accent" type="button" id="evolutionModeButton">进化模式</button>
+              <button class="menu-btn" type="button" id="loadSaveButton">读取存档</button>
+              <button class="menu-btn" type="button" id="openSettingsButton">设置</button>
+            </div>
+
+            <div class="save-card">
+              <p class="save-card__title">最近存档</p>
+              <p class="save-card__meta" id="saveSummary">暂无存档。点击“进入游戏”开始新的旅程。</p>
+            </div>
+
+            <p class="menu-status" id="menuStatus">你可以从这里开始新游戏、读取存档，或调整设置。</p>
+          </div>
+
+          <div class="settings-card hidden" id="settingsPanel">
+            <div class="settings-card__header">
+              <h2 class="settings-card__title">设置</h2>
+              <button class="menu-btn menu-btn--ghost" type="button" id="closeSettingsButton">返回</button>
+            </div>
+
+            <label class="setting-item">
+              <span class="setting-item__text">自动存档</span>
+              <input type="checkbox" id="settingAutosave" />
+            </label>
+
+            <label class="setting-item">
+              <span class="setting-item__text">减弱动态效果</span>
+              <input type="checkbox" id="settingReducedMotion" />
+            </label>
+
+            <label class="setting-item">
+              <span class="setting-item__text">背景音乐</span>
+              <input type="checkbox" id="settingMusic" />
+            </label>
+
+            <label class="setting-item">
+              <span class="setting-item__text">音效</span>
+              <input type="checkbox" id="settingSfx" />
+            </label>
+
+            <div class="setting-item">
+              <button class="menu-btn" type="button" id="exportSaveButton">导出存档</button>
+              <button class="menu-btn" type="button" id="importSaveButton">导入存档</button>
+              <input type="file" id="importFileInput" accept=".json" style="display:none" />
+            </div>
+
+            <p class="settings-card__hint">设置会保存在当前浏览器中。读取存档只会恢复游戏进度，不会覆盖你的设置。首次点击按钮后，浏览器会解锁背景音乐与音效。自动存档会保存到本地文件，导出/导入功能可备份或恢复存档。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

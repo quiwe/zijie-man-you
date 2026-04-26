@@ -1,0 +1,59 @@
+{
+  "name": "zijie-man-you",
+  "version": "1.0.0",
+  "description": "字界漫游 - 汉字开放世界游戏",
+  "main": "main.js",
+  "scripts": {
+    "start": "node scripts/run-electron.js",
+    "dev": "node scripts/run-electron.js --dev",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "android:init": "npx cap add android",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build:debug": "bash scripts/build-android-debug.sh",
+    "web:build": "node scripts/build-web.js",
+    "web:serve": "node scripts/serve-web.js"
+  },
+  "build": {
+    "appId": "com.zijie.manyou",
+    "productName": "字界漫游",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "!dist/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.games",
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
+    }
+  },
+  "keywords": [
+    "game",
+    "electron",
+    "chinese",
+    " characters"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1"
+  }
+}
