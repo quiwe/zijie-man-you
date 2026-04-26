@@ -853,7 +853,9 @@ function getPrimaryControlHint() {
 }
 
 function clearPressedKeys() {
-  clearPressedKeys();
+  for (const key of Object.keys(keys)) {
+    keys[key] = false;
+  }
   resetTouchMovement();
   releaseTouchAttack();
 }
