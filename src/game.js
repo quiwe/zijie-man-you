@@ -2915,27 +2915,30 @@ function getInteractionTarget() {
 }
 
 function getInteractionPromptSpec(target) {
+  const touch = supportsTouchInput();
   if (target.type === "npc") {
     if (target.npc.id === "scribe") {
-      return { text: "K 拓印强化", width: 132 };
+      return touch ? { text: "互动 · 拓印", width: 126 } : { text: "K 拓印强化", width: 132 };
     }
-    return { text: "K 交谈", width: 104 };
+    return touch ? { text: "互动 · 交谈", width: 118 } : { text: "K 交谈", width: 104 };
   }
 
   if (isEvolutionMode()) {
     if (target.type === "checkpoint") {
       const used = state.evolution.usedAnchors.has(target.checkpoint.id);
-      return { text: used ? "K 观测锚迹" : "K 汲火稳形", width: used ? 146 : 150 };
+      return touch
+        ? { text: used ? "互动 · 观测" : "互动 · 汲火", width: 126 }
+        : { text: used ? "K 观测锚迹" : "K 汲火稳形", width: used ? 146 : 150 };
     }
 
-    return { text: "K 收束锚迹", width: 138 };
+    return touch ? { text: "互动 · 收束", width: 126 } : { text: "K 收束锚迹", width: 138 };
   }
 
   if (target.type === "checkpoint") {
-    return { text: "K 设为存档点", width: 142 };
+    return touch ? { text: "互动 · 存档", width: 126 } : { text: "K 设为存档点", width: 142 };
   }
 
-  return { text: "K 点亮", width: 104 };
+  return touch ? { text: "互动 · 点亮", width: 118 } : { text: "K 点亮", width: 104 };
 }
 
 function getQuestStageName() {
@@ -6317,11 +6320,14 @@ function drawDialog() {
 function drawCompactHud(skillLabel, martialLabel, routeTarget, checkpoint) {
   const currentRegion = regionDefinitions[state.quest.currentRegion] || regionDefinitions.village;
   const miniMapLayout = getMiniMapLayout();
-  const touchMenuClearance = supportsTouchInput() ? 54 : 0;
-  const panelWidth = Math.min(state.width - 26, Math.max(210, state.width - (miniMapLayout.radius * 2 + 52)));
+  const touchLayout = supportsTouchInput();
+  const touchMenuClearance = touchLayout ? 50 : 0;
+  const panelWidth = touchLayout
+    ? Math.min(224, state.width - (miniMapLayout.radius * 2 + 58))
+    : Math.min(state.width - 26, Math.max(210, state.width - (miniMapLayout.radius * 2 + 52)));
   const panelX = 12;
   const panelY = 12 + touchMenuClearance;
-  const panelHeight = isEvolutionMode() ? 134 : 122;
+  const panelHeight = touchLayout ? (isEvolutionMode() ? 112 : 102) : isEvolutionMode() ? 134 : 122;
 
   ctx.fillStyle = "rgba(4, 11, 17, 0.68)";
   roundRect(panelX, panelY, panelWidth, panelHeight, 18);
@@ -6332,24 +6338,26 @@ function drawCompactHud(skillLabel, martialLabel, routeTarget, checkpoint) {
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillStyle = "#fff7e8";
-  ctx.font = `18px ${WORLD_FONT}`;
-  ctx.fillText(`心火 ${Math.round(state.player.hp)}/${state.player.maxHp}`, panelX + 16, panelY + 14);
+  ctx.font = `${touchLayout ? 16 : 18}px ${WORLD_FONT}`;
+  ctx.fillText(`心火 ${Math.round(state.player.hp)}/${state.player.maxHp}`, panelX + 14, panelY + 12);
 
   ctx.fillStyle = "rgba(242, 235, 216, 0.88)";
-  ctx.font = `13px ${WORLD_FONT}`;
-  ctx.fillText(`区域：${currentRegion.name}`, panelX + 16, panelY + 42);
-  ctx.fillText(`章节：${getQuestStageName()}`, panelX + 16, panelY + 62);
-  drawWrappedText(`任务：${routeTarget ? routeTarget.label : getQuestObjectiveText()}`, panelX + 16, panelY + 82, panelWidth - 32, 18, 2);
+  ctx.font = `${touchLayout ? 12 : 13}px ${WORLD_FONT}`;
+  ctx.fillText(`区域：${currentRegion.name}`, panelX + 14, panelY + 38);
+  ctx.fillText(`章节：${getQuestStageName()}`, panelX + 14, panelY + 57);
+  drawWrappedText(`任务：${routeTarget ? routeTarget.label : getQuestObjectiveText()}`, panelX + 14, panelY + 76, panelWidth - 28, 17, touchLayout ? 1 : 2);
 
-  const footerY = panelY + panelHeight - 22;
-  ctx.fillStyle = "rgba(151, 230, 255, 0.9)";
-  ctx.font = `12px ${WORLD_FONT}`;
-  ctx.fillText(isEvolutionMode() ? `进化 ${state.evolution.level} 阶 · 字魄 ${state.evolution.xp}/${state.evolution.nextXp}` : `存档点：${checkpoint.label}`, panelX + 16, footerY);
+  if (!touchLayout) {
+    const footerY = panelY + panelHeight - 22;
+    ctx.fillStyle = "rgba(151, 230, 255, 0.9)";
+    ctx.font = `12px ${WORLD_FONT}`;
+    ctx.fillText(isEvolutionMode() ? `进化 ${state.evolution.level} 阶 · 字魄 ${state.evolution.xp}/${state.evolution.nextXp}` : `存档点：${checkpoint.label}`, panelX + 16, footerY);
 
-  ctx.textAlign = "right";
-  ctx.fillStyle = "rgba(242, 235, 216, 0.78)";
-  ctx.fillText(skillLabel, panelX + panelWidth - 16, panelY + 14);
-  ctx.fillText(martialLabel, panelX + panelWidth - 16, panelY + 34);
+    ctx.textAlign = "right";
+    ctx.fillStyle = "rgba(242, 235, 216, 0.78)";
+    ctx.fillText(skillLabel, panelX + panelWidth - 16, panelY + 14);
+    ctx.fillText(martialLabel, panelX + panelWidth - 16, panelY + 34);
+  }
 }
 
 function drawHud() {
