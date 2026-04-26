@@ -6321,13 +6321,13 @@ function drawCompactHud(skillLabel, martialLabel, routeTarget, checkpoint) {
   const currentRegion = regionDefinitions[state.quest.currentRegion] || regionDefinitions.village;
   const miniMapLayout = getMiniMapLayout();
   const touchLayout = supportsTouchInput();
-  const touchMenuClearance = touchLayout ? 50 : 0;
+  const touchMenuClearance = touchLayout ? 66 : 0;
   const panelWidth = touchLayout
-    ? Math.min(224, state.width - (miniMapLayout.radius * 2 + 58))
+    ? Math.min(202, state.width - (miniMapLayout.radius * 2 + 70))
     : Math.min(state.width - 26, Math.max(210, state.width - (miniMapLayout.radius * 2 + 52)));
   const panelX = 12;
   const panelY = 12 + touchMenuClearance;
-  const panelHeight = touchLayout ? (isEvolutionMode() ? 112 : 102) : isEvolutionMode() ? 134 : 122;
+  const panelHeight = touchLayout ? (isEvolutionMode() ? 100 : 92) : isEvolutionMode() ? 134 : 122;
 
   ctx.fillStyle = "rgba(4, 11, 17, 0.68)";
   roundRect(panelX, panelY, panelWidth, panelHeight, 18);
@@ -6344,8 +6344,13 @@ function drawCompactHud(skillLabel, martialLabel, routeTarget, checkpoint) {
   ctx.fillStyle = "rgba(242, 235, 216, 0.88)";
   ctx.font = `${touchLayout ? 12 : 13}px ${WORLD_FONT}`;
   ctx.fillText(`区域：${currentRegion.name}`, panelX + 14, panelY + 38);
-  ctx.fillText(`章节：${getQuestStageName()}`, panelX + 14, panelY + 57);
-  drawWrappedText(`任务：${routeTarget ? routeTarget.label : getQuestObjectiveText()}`, panelX + 14, panelY + 76, panelWidth - 28, 17, touchLayout ? 1 : 2);
+  if (touchLayout) {
+    ctx.fillText(`进度：${isEvolutionMode() ? `第 ${state.evolution.level} 阶` : getQuestStageName()}`, panelX + 14, panelY + 57);
+    drawWrappedText(routeTarget ? routeTarget.label : getQuestObjectiveText(), panelX + 14, panelY + 76, panelWidth - 28, 17, 1);
+  } else {
+    ctx.fillText(`章节：${getQuestStageName()}`, panelX + 14, panelY + 57);
+    drawWrappedText(`任务：${routeTarget ? routeTarget.label : getQuestObjectiveText()}`, panelX + 14, panelY + 76, panelWidth - 28, 17, 2);
+  }
 
   if (!touchLayout) {
     const footerY = panelY + panelHeight - 22;

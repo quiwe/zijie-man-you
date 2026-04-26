@@ -263,8 +263,8 @@ body {
   position: absolute;
   top: calc(12px + var(--safe-top));
   left: calc(12px + var(--safe-left));
-  min-width: 60px;
-  padding: 9px 13px;
+  min-width: 54px;
+  padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
   background: rgba(5, 10, 18, 0.78);
@@ -280,6 +280,8 @@ body {
 
 .touch-chip--menu {
   z-index: 2;
+  top: calc(10px + var(--safe-top));
+  left: calc(10px + var(--safe-left));
 }
 
 .touch-pad {
